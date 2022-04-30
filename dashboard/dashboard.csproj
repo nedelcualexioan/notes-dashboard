@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net5.0-windows\dashboard.deps.json" />
+    <Content Include="bin\Debug\net5.0-windows\dashboard.runtimeconfig.dev.json" />
+    <Content Include="bin\Debug\net5.0-windows\dashboard.runtimeconfig.json" />
+    <Content Include="bin\Debug\net5.0-windows\db\notes.txt" />
+    <Content Include="bin\Debug\net5.0-windows\db\persons.txt" />
+    <Content Include="bin\Debug\net5.0-windows\images\del.png" />
+    <Content Include="bin\Debug\net5.0-windows\images\iconUser.png" />
+    <Content Include="bin\Debug\net5.0-windows\images\lock.png" />
+    <Content Include="bin\Debug\net5.0-windows\images\logo.png" />
+    <Content Include="bin\Debug\net5.0-windows\notes.deps.json" />
+    <Content Include="bin\Debug\net5.0-windows\notes.runtimeconfig.dev.json" />
+    <Content Include="bin\Debug\net5.0-windows\notes.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net5.0-windows\dashboard.dll" />
+    <None Include="bin\Debug\net5.0-windows\dashboard.exe" />
+    <None Include="bin\Debug\net5.0-windows\dashboard.pdb" />
+    <None Include="bin\Debug\net5.0-windows\FontAwesome.Sharp.dll" />
+    <None Include="bin\Debug\net5.0-windows\notes.dll" />
+    <None Include="bin\Debug\net5.0-windows\notes.exe" />
+    <None Include="bin\Debug\net5.0-windows\notes.pdb" />
+    <None Include="bin\Debug\net5.0-windows\ref\dashboard.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\notes\notes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

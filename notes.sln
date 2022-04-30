@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32407.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "notes", "notes\notes.csproj", "{DB62C1FD-3CA7-4BEC-A131-C72BCC64B0C9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dashboard", "dashboard\dashboard.csproj", "{4CA52332-10DB-4F4A-A292-2F5D1C9F6C4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB62C1FD-3CA7-4BEC-A131-C72BCC64B0C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB62C1FD-3CA7-4BEC-A131-C72BCC64B0C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB62C1FD-3CA7-4BEC-A131-C72BCC64B0C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB62C1FD-3CA7-4BEC-A131-C72BCC64B0C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CA52332-10DB-4F4A-A292-2F5D1C9F6C4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CA52332-10DB-4F4A-A292-2F5D1C9F6C4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CA52332-10DB-4F4A-A292-2F5D1C9F6C4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CA52332-10DB-4F4A-A292-2F5D1C9F6C4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {67FF9207-AC06-4473-AA4A-128B7057AD49}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <COMReference Include="{215d64d2-031c-33c7-96e3-61794cd1ee61}">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>4</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <Guid>215d64d2-031c-33c7-96e3-61794cd1ee61</Guid>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net5.0\notes.deps.json" />
+    <Content Include="bin\Debug\net5.0\notes.runtimeconfig.dev.json" />
+    <Content Include="bin\Debug\net5.0\notes.runtimeconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net5.0\db\notes.txt" />
+    <None Include="bin\Debug\net5.0\db\persons.txt" />
+    <None Include="bin\Debug\net5.0\notes.dll" />
+    <None Include="bin\Debug\net5.0\notes.exe" />
+    <None Include="bin\Debug\net5.0\notes.pdb" />
+    <None Include="bin\Debug\net5.0\ref\notes.dll" />
+  </ItemGroup>
+
+</Project>
