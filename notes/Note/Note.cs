@@ -52,6 +52,11 @@ namespace notes
             }
         }
 
+        public DateTime DateTime
+        {
+            get => Convert.ToDateTime(this.date);
+        }
+
         public String Text
         {
             get => this.text;
@@ -109,7 +114,7 @@ namespace notes
             String text = "";
 
 
-            text += String.Format("{0},{1},{2},{3},{4},{5}", id.ToString(), type, title, date, this.text, userId.ToString());
+            text += String.Format("{0},{1},{2},{3},{4},{5}", id.ToString(), type, title, date, this.text.Replace(Environment.NewLine, "/n"), userId.ToString());
 
             return text;
         }

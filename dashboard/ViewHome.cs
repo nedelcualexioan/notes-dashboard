@@ -18,6 +18,7 @@ namespace dashboard
         private Label lblImp;
         private PictureBox pctUser;
         private Label lblLogin;
+        private PictureBox pctCalendar;
 
         private Button btnAdd;
 
@@ -27,9 +28,10 @@ namespace dashboard
 
         public event EventHandler allClick;
         public event EventHandler catClick;
+        public event EventHandler cardDClick;
 
         private List<Card> cards;
-        public ViewHome(Form par, ControllerNotes notes)
+        public ViewHome(FrmHome par, ControllerNotes notes)
         {
             this.Parent = par;
             this.Size = this.Parent.Size;
@@ -97,6 +99,16 @@ namespace dashboard
                 Cursor = Cursors.Hand
             };
 
+            pctCalendar = new PictureBox
+            {
+                Parent = this.pnlHeader,
+                ImageLocation = Application.StartupPath + @"\images\calendar.png",
+                SizeMode = PictureBoxSizeMode.Zoom,
+                Size = new Size(42, 39),
+                Location = new Point(915, 17),
+                Cursor = Cursors.Hand
+            };
+
             btnAdd = new Button
             {
                 Parent = pnlHeader,
@@ -145,7 +157,8 @@ namespace dashboard
             lblBus.Click += new EventHandler(lblCat_Click);
             lblSocial.Click += new EventHandler(lblCat_Click);
             lblImp.Click += new EventHandler(lblCat_Click);
-
+            btnAdd.Click += (s, e) => btnAdd_Click(s, e, notes, par.Person != null, par);
+            pctCalendar.Click += (s, e) => pctCalendar_Click(s, e, notes, par.Person);
 
 
 
@@ -192,6 +205,8 @@ namespace dashboard
 
                 cards.Add(card);
                 card.cmbChange += (s, e) => cmb_SelectedIndexChange(s, e, notes);
+                card.delClick += (s, e) => cardDel_Click(s, e, notes);
+                card.cardDouble += card_DoubleClick;
 
                 if (x == 760)
                 {
@@ -230,6 +245,48 @@ namespace dashboard
 
                 cards.Add(card);
                 card.cmbChange += (s, e) => cmb_SelectedIndexChange(s, e, notes);
+                card.delClick += (s, e) => cardDel_Click(s, e, notes);
+               
+
+                if (x == 760)
+                {
+                    x = 0;
+                    y += 210;
+                }
+                else
+                {
+                    x += 380;
+                }
+            }
+        }
+
+        public void populateDate(ControllerNotes notes, Person person, DateTime date)
+        {
+            List<Note> list;
+
+            if (person is Admin)
+            {
+                list = notes.GetListDate(date);
+            }
+            else
+            {
+                list = notes.GetListDate(date, person.Id);
+            }
+
+            int x = 0, y = 0;
+
+            foreach (Note note in list)
+            {
+                Card card = new Card(note, notes)
+                {
+                    Parent = this.containerCards,
+                    Location = new Point(x, y)
+                };
+
+                cards.Add(card);
+                card.cmbChange += (s, e) => cmb_SelectedIndexChange(s, e, notes);
+                card.delClick += (s, e) => cardDel_Click(s, e, notes);
+
 
                 if (x == 760)
                 {
@@ -274,26 +331,27 @@ namespace dashboard
 
             String newCat = card.CmbType.Items[card.CmbType.SelectedIndex].ToString();
 
-            foreach (Card c in containerCards.Controls)
+            foreach (Control c in containerCards.Controls)
             {
-                if (c != null && c.Equals(card))
+                Card card1 = c as Card;
+
+                if (card1 != null && card1.Id.Equals(card.Id))
                 {
 
                     if (newCat.Equals("Social"))
                     {
-                        c.TitleColor = Color.FromArgb(149, 213, 241);
+                        card1.TitleColor = Color.FromArgb(149, 213, 241);
                     }
                     else if (newCat.Equals("Important"))
                     {
-                        c.TitleColor = Color.FromArgb(255, 167, 167);
+                        card1.TitleColor = Color.FromArgb(255, 167, 167);
                     }
                     else
                     {
-                        c.TitleColor = Color.FromArgb(40, 167, 69);
+                        card1.TitleColor = Color.FromArgb(40, 167, 69);
                     }
                 }
                
-                break;
 
             }
 
@@ -301,6 +359,137 @@ namespace dashboard
             notes.save();
 
         }
+
+        public void cardDel_Click(object sender, EventArgs e, ControllerNotes notes)
+        {
+            Card card = sender as Card;
+
+            notes.remove(card.Id);
+            notes.resetId();
+            notes.save();
+
+            foreach(Control c in containerCards.Controls)
+            {
+                Card card1 = c as Card;
+
+                if(card1 != null && card1.Id.Equals(card.Id))
+                {
+                    containerCards.Controls.Remove(c);
+                    break;
+                }
+            }
+
+            rearrange();
+        }
+
+        public void rearrange()
+        {
+            int x = 0, y = 0;
+
+            foreach (Control c in containerCards.Controls)
+            {
+                if (c is Card)
+                {
+                    c.Location = new Point(x, y);
+
+                    if (x == 760)
+                    {
+                        x = 0;
+                        y += 210;
+                    }
+                    else
+                    {
+                        x += 380;
+                    }
+                }
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e, ControllerNotes notes, bool isLogged, FrmHome home)
+        {
+            if (isLogged)
+            {
+                FrmAdd add = new FrmAdd();
+
+                add.addClick += (s, e) => btnAdd_Click(s, e, notes, home);
+
+                add.ShowDialog();
+            }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e, ControllerNotes notes, FrmHome home)
+        {
+
+            FrmAdd add = sender as FrmAdd;
+
+            if(String.IsNullOrWhiteSpace(add.Title) || String.IsNullOrWhiteSpace(add.Txt) || add.CmbCat.SelectedItem == null)
+            {
+                MessageBox.Show("Campuri goale!", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            Card card;
+
+            if (add.CmbCat.SelectedItem.Equals("Important"))
+            {
+                Important important = new Important(notes.nextId(), add.CmbCat.SelectedItem.ToString(), add.Title, DateTime.Now.Date.ToString("dd MMMM yyyy"), add.Txt, home.Person.Id);
+                notes.add(important);
+
+                card = new Card(important, notes);
+            }
+            else if (add.CmbCat.SelectedItem.ToString().Equals("Social"))
+            {
+                Social social = new Social(notes.nextId(), add.CmbCat.SelectedItem.ToString(), add.Title, DateTime.Now.Date.ToString("dd MMMM yyyy"), add.Txt, home.Person.Id);
+                notes.add(social);
+
+                card = new Card(social, notes);
+            }
+            else
+            {
+                Business business = new Business(notes.nextId(), add.CmbCat.SelectedItem.ToString(), add.Title, DateTime.Now.Date.ToString("dd MMMM yyyy"), add.Txt, home.Person.Id);
+                notes.add(business);
+
+                card = new Card(business, notes);
+            }
+
+            card.delClick += (s, e) => cardDel_Click(s, e, notes);
+            card.cmbChange += (s, e) => cmb_SelectedIndexChange(s, e, notes);
+
+            notes.sort();
+
+            containerCards.Controls.Add(card);
+            rearrange();
+
+            
+            notes.save();
+
+            add.Close();
+        }
+
+        private void card_DoubleClick(object sender, EventArgs e)
+        {
+            if(cardDClick != null)
+            {
+                cardDClick(sender, null);
+            }
+        }
+
+        public void clear()
+        {
+            this.cards.Clear();
+            this.containerCards.Controls.Clear();
+        }
+
+        private void pctCalendar_Click(object sender, EventArgs e, ControllerNotes notes, Person person)
+        {
+            if(person != null)
+            {
+                FrmCalendar calendar = new FrmCalendar(this, notes, person);
+                calendar.ShowDialog();
+                calendar.StartPosition = FormStartPosition.CenterScreen;
+            }
+        }
+        
 
     }
 }

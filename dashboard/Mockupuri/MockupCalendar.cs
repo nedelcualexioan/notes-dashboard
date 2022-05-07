@@ -10,16 +10,11 @@ using System.Windows.Forms;
 
 namespace dashboard.Mockupuri
 {
-    public partial class MockupAddNote : Form
+    public partial class MockupCalendar : Form
     {
-        public MockupAddNote()
+        public MockupCalendar()
         {
             InitializeComponent();
-        }
-
-        private void MockupAddNote_Load(object sender, EventArgs e)
-        {
-            
         }
     }
 }

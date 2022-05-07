@@ -17,27 +17,29 @@ namespace notes
             notes = new List<Note>();
 
             citire();
+
+            
         }
 
         public String afisare()
         {
             String text = "";
 
-            foreach(Note n in notes)
+            foreach (Note n in notes)
             {
-                if(n is Business)
+                if (n is Business)
                 {
                     Business business = n as Business;
 
                     text += business.descriere();
                 }
-                else if(n is Important)
+                else if (n is Important)
                 {
                     Important im = n as Important;
 
                     text += im.descriere();
                 }
-                else if(n is Social)
+                else if (n is Social)
                 {
                     Social s = n as Social;
 
@@ -60,11 +62,11 @@ namespace notes
 
         public void citire()
         {
-            StreamReader read = new StreamReader (AppDomain.CurrentDomain.BaseDirectory + @"\db\notes.txt");
+            StreamReader read = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + @"\db\notes.txt");
 
             String line = "";
 
-            while((line = read.ReadLine()) != null)
+            while ((line = read.ReadLine()) != null)
             {
                 switch (line.Split(",")[1])
                 {
@@ -91,13 +93,13 @@ namespace notes
         public String proprietati()
         {
             String text = "";
-
-            foreach(Note note in notes)
+           
+            for(int i = 0; i < notes.Count-1; i++)
             {
-                text += note.proprietati() + "\n";
-            }
+                text += notes[i].proprietati() + "\n";
 
-            return text;
+            }
+            return text += notes[notes.Count - 1].proprietati(); 
         }
 
         public void save()
@@ -113,7 +115,7 @@ namespace notes
         {
             List<Note> list = new List<Note>();
 
-            foreach(Note note in notes)
+            foreach (Note note in notes)
             {
                 if (note.UserId.Equals(persId))
                 {
@@ -133,9 +135,9 @@ namespace notes
         {
             List<Note> list = new List<Note>();
 
-            foreach(Note note in notes)
+            foreach (Note note in notes)
             {
-                if(note.UserId.Equals(persId) && note.Type.Equals(category))
+                if (note.UserId.Equals(persId) && note.Type.Equals(category))
                 {
                     list.Add(note);
                 }
@@ -147,7 +149,7 @@ namespace notes
         {
             List<Note> list = new List<Note>();
 
-            foreach(Note note in notes)
+            foreach (Note note in notes)
             {
                 if (note.Type.Equals(category))
                 {
@@ -157,11 +159,41 @@ namespace notes
             return list;
         }
 
+        public List<Note> GetListDate(DateTime date)
+        {
+            List<Note> list = new List<Note>();
+
+            foreach (Note note in notes)
+            {
+                if (note.DateTime.Equals(date))
+                {
+                    list.Add(note);
+                }
+            }
+
+            return list;
+        }
+
+        public List<Note> GetListDate(DateTime date, int persId)
+        {
+            List<Note> list = new List<Note>();
+
+            foreach (Note note in notes)
+            {
+                if (note.DateTime.Equals(date) && note.UserId.Equals(persId))
+                {
+                    list.Add(note);
+                }
+            }
+
+            return list;
+        }
+
         public Note GetNote(String title, String date, String text, String type)
         {
-            foreach(Note note in notes)
+            foreach (Note note in notes)
             {
-                if(note.Title.Equals(title) && note.Date.Equals(date) && note.Text.Equals(text) && note.Type.Equals(type))
+                if (note.Title.Equals(title) && note.Date.Equals(date) && note.Text.Equals(text) && note.Type.Equals(type))
                 {
                     return note;
                 }
@@ -179,6 +211,69 @@ namespace notes
                 notes[index].Type = type;
 
             }
+        }
+
+        public void remove(int id)
+        {
+            foreach(Note note in notes)
+            {
+                if(note.Id == id)
+                {
+                    notes.Remove(note);
+                    break;
+                }
+            }
+        }
+
+        public void resetId()
+        {
+            for(int i = 0; i < notes.Count; i++)
+            {
+                notes[i].Id = i + 1;
+            }
+        }
+
+        public void add(Note note)
+        {
+            notes.Add(note);
+        }
+
+        public int nextId()
+        {
+            return notes.Count + 1;
+        }
+
+        public Note getNote(int id)
+        {
+            foreach(Note note in notes)
+            {
+                if (note.Id == id)
+                    return note;
+            }
+            return null;
+        }
+
+        public void updateNote(int id, String title = "", String text = "", String date = "")
+        {
+            if (title == "" && text == "" && date == "")
+                return;
+
+            foreach(Note note in notes)
+            {
+                if(note.Id == id)
+                {
+                    note.Title = title;
+                    note.Text = text;
+                    note.Date = date;
+
+                    break;
+                }
+            }
+        }
+
+        public void sort()
+        {
+            notes = notes.OrderByDescending(o => o.DateTime).ToList();
         }
 
     }

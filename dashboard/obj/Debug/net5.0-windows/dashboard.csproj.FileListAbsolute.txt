@@ -60,3 +60,6 @@ C:\Users\anndr\Documents\notes\dashboard\obj\Debug\net5.0-windows\dashboard.cspr
 C:\Users\anndr\Documents\notes\dashboard\obj\Debug\net5.0-windows\dashboard.genruntimeconfig.cache
 C:\Users\anndr\Documents\C#\OOP\Mostenirea\notes\dashboard\obj\Debug\net5.0-windows\dashboard.Mockupuri.MockupAddNote.resources
 C:\Users\anndr\Documents\C#\OOP\Mostenirea\notes\dashboard\obj\Debug\net5.0-windows\dashboard.FrmAdd.resources
+C:\Users\anndr\Documents\C#\OOP\Mostenirea\notes\dashboard\obj\Debug\net5.0-windows\dashboard.Mockupuri.MockupEdit.resources
+C:\Users\anndr\Documents\C#\OOP\Mostenirea\notes\dashboard\obj\Debug\net5.0-windows\dashboard.FrmCalendar.resources
+C:\Users\anndr\Documents\C#\OOP\Mostenirea\notes\dashboard\obj\Debug\net5.0-windows\dashboard.Mockupuri.MockupCalendar.resources

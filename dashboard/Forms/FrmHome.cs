@@ -20,6 +20,11 @@ namespace dashboard
         private ControllerNotes notes;
 
         Person person = null;
+
+        public Person Person
+        {
+            get => this.person;
+        }
         public FrmHome()
         {
             InitializeComponent();
@@ -30,9 +35,16 @@ namespace dashboard
             persons = new ControllerPersons();
             notes = new ControllerNotes();
 
+            
+
             viewHome = new ViewHome(this, notes);
 
             viewLogin = new ViewLogin(this, persons);
+
+            foreach(Control c in this.Controls)
+            {
+                c.Hide();
+            }
 
             viewHome.Show();
 
@@ -43,6 +55,7 @@ namespace dashboard
 
             viewHome.allClick += new EventHandler((s, e) => home_allClick(s, e, notes));
             viewHome.catClick += new EventHandler((s, e) => home_categClick(s, e, notes));
+            viewHome.cardDClick += (s, e) => homeCard_DoubleClick(s, e, notes);
         }   
         private void FrmHome_Load(object sender, EventArgs e)
         {
@@ -103,6 +116,55 @@ namespace dashboard
 
                 viewHome.populateCategory(ctrNotes, person, label.Text);
             }
+        }
+
+        private void homeCard_DoubleClick(object sender, EventArgs e, ControllerNotes notes)
+        {
+
+            Card card = sender as Card;
+
+            FrmAdd frmAdd = new FrmAdd();
+
+            frmAdd.setData(card);
+            
+            frmAdd.BtnText = "Update";
+            frmAdd.Note = notes.getNote(card.Id);
+            frmAdd.updateClick += (s, e) => frmAddUpdate_Click(s, e, notes, card);
+
+            frmAdd.ShowDialog();
+
+        }
+
+        private void frmAddUpdate_Click(object sender, EventArgs e, ControllerNotes notes, Card card)
+        {
+            FrmAdd add = sender as FrmAdd;
+
+            card.Title = add.Title;
+            card.Date = DateTime.Now.Date.ToString("dd MMMM yyyy");
+            card.Txt = add.Txt;
+
+            notes.updateNote(card.Id, add.Title, card.Txt, DateTime.Now.Date.ToString("dd MMMM yyyy"));
+
+            String newCat = add.CmbCat.SelectedItem.ToString();
+
+            if (newCat.Equals("Social"))
+            {
+                card.TitleColor = Color.FromArgb(149, 213, 241);
+            }
+            else if (newCat.Equals("Important"))
+            {
+                card.TitleColor = Color.FromArgb(255, 167, 167);
+            }
+            else
+            {
+                card.TitleColor = Color.FromArgb(40, 167, 69);
+            }
+
+            notes.changeType(notes.GetNote(card.Title, card.Date, card.Txt, card.Type), newCat);
+            notes.sort();
+            notes.save();
+
+            add.Close();
         }
     }
 }
